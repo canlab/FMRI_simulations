@@ -1,4 +1,7 @@
-This repository contains stand-alone simulations and demonstrations related to MRI analysis and neuroscience.  Sections are currently:
+This repository contains stand-alone simulations and demonstrations related to MRI analysis and neuroscience.  
+Authors: Tor Wager (who is happy to have others contribute)
+
+Sections are currently:
 
 1. Effect sizes and effect size inflation (Reddan et al. 2017, JAMA Psychiatry)
 
