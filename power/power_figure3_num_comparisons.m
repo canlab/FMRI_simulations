@@ -23,7 +23,7 @@ n_effective_comps = [n_20 n_bonf n_perm n_rft];
 %%
 create_figure('Power');
 
-dvals = [.5 .8 1.1];
+dvals = [.5 .8 1.1 1.91];
 
 cvals = [1:10 15:5:100 110:10:300 350:50:1000 1000:100:12000 12500:500:exp(12)];
 
@@ -140,3 +140,54 @@ obspow(wh, :)
 
 % small     large     massive
 % 0.0125    0.2767    0.8709
+
+
+%% SIMPLER VERSION - d = 0.5 vs. 1.91 (Average from single-trial database)
+
+%dvals = [.5 1.91];
+
+%cvals = [1:10 15:5:100 110:10:300 350:50:1000 1000:100:12000 12500:500:exp(12)];
+
+cla
+legend off
+title('Power to detect moderate effect size');
+
+clear hh
+for i = [1 3 4]
+     
+    hh(i) = plot(log(cvals), obspow(:, i), 'color', colors{i}, 'LineWidth', 3);
+    
+end
+
+textlabels = {'20 ROIs' 'Bonf' 'Perm' 'RFT'};
+
+plot(log([1 1]), [0 1], 'Color', [.5 .5 .5], 'LineStyle', ':', 'LineWidth', 2);
+text(log(1), .07, '1 test', 'FontSize', 18, 'Color', [.2 .2 .2]);
+
+for j = 1:length(n_effective_comps)
+    
+    myx = log([n_effective_comps(j) n_effective_comps(j)]);
+    plot(myx, [0 1], 'Color', [.5 .5 .5], 'LineStyle', ':', 'LineWidth', 2);
+
+    text(log(n_effective_comps(j)), .07, sprintf('%s', textlabels{j}), 'FontSize', 18, 'Color', [.2 .2 .2]);
+
+%     myy = cvals(
+%     plot(myx, [0 .8], 'color', colors{i}, 'LineWidth', 1, 'LineStyle', ':');
+end
+    
+%%
+
+scn_export_papersetup(600);
+saveas(gcf, 'power_figure3C.png');
+scn_export_papersetup(500);
+saveas(gcf, 'power_figure3Calt.png');
+
+
+%% what is power with SNPM correction (perm)?
+
+wh = find(cvals >= n_perm); wh = wh(1);
+obspow(wh, :)
+
+%% N needed for one test
+
+power_calc(dvals(i), .025 ./ 1, n);
