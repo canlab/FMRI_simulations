@@ -1,0 +1,80 @@
+[obj, true_obj, noise_obj] = sim_data(fmri_data, 'n', 30, 'plot');
+
+mt = mean(true_obj);
+
+% Counts
+istrue = mt.dat > 100*eps; % true pos vox
+ntrue = sum(istrue); % num true
+
+% Preliminary figure of true signal 
+
+t = ttest(obj, .001, 'unc');
+
+% convert t to effect size
+rootn = sqrt(size(obj.dat, 2));
+t.dat = t.dat ./ rootn;
+
+o2 = canlab_results_fmridisplay([], 'multirow', 1);
+o2 = addblobs(o2, region(t), 'splitcolor', 'wh_montages', 1:2, 'cmaprange', [-2 2]);
+o2 = addblobs(o2, region(mt), 'color', [0 0 0], 'wh_montages', 1:2, 'outline');
+
+%%
+create_figure('slices', 5, 5);
+
+o3 = fmridisplay;
+
+for i = 1:5*5
+      
+    subplot(5, 5, i)
+    o3 = montage(o3, 'axial', 'slice_range', [40 40], 'onerow', 'existing_axes', gca);
+    
+end
+
+o3 = addblobs(o3, region(mt), 'color', [0 0 0], 'wh_montages', 1:5*5, 'outline');
+o3 = addblobs(o3, region(mt), 'color', [.5 .5 1], 'wh_montages', 1:5*5, 'trans');
+
+for i = 1:5*5
+      
+    subplot(5, 5, i)
+    camzoom(1.8)
+    
+end
+
+is_sig_matrix = zeros(size(istrue, 1), 5*5);
+
+for i = 1:5*5
+      
+    subplot(5, 5, i)
+    
+    obj = sim_data(fmri_data, 'n', 30);
+    t = ttest(obj, .001, 'unc');
+    rootn = sqrt(size(obj.dat, 2));
+    t.dat = t.dat ./ rootn;
+
+    o3 = addblobs(o3, region(t), 'splitcolor', 'wh_montages', i, 'cmaprange', [-2 2]);
+    
+    % statistics on this sample
+    
+    tp(i, 1) = sum(t.sig & istrue) / ntrue; % hit rate
+    fp(i, 1) = sum(t.sig & ~istrue) / sum(~istrue); % false alarm rate
+    spec(i, 1) = 1 - fp; % specificity
+
+    % for calculating overlap
+    is_sig_matrix(:, i) = t.sig;
+    
+end
+
+obs_power = sum(is_sig_matrix) ./ ntrue;
+[min(obs_power) max(obs_power)] 
+
+% P < .001, N = 30 : power = 17 - 28%
+
+%% do it without the blue 'true' blobs
+
+%% Save
+
+% cd('/Users/torwager/Documents/GitHub/FMRI_simulations/power')
+figsavedir = fullfile(pwd, 'figures');
+mkdir(figsavedir)
+saveas(gcf, fullfile(figsavedir, 'power_fpr_maps1_p001_n30.svg'))
+

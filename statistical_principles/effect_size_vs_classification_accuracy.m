@@ -13,6 +13,12 @@
 % Using normal probability model to get expected relationships
 % conditional on normal distribution
 
+% NNT example for genetic disorder
+% d = norminv(1 - 10E-10) / sqrt(100000)
+% p = normcdf(d)
+% p = normcdf(d/2)
+% nnt = 1/(p - .50)  = 264
+
 % Effect size
 % For one sample, the effect size is the standardized distance from a fixed value, zero.
 % Thus, it is the mean sample value / its standard deviation.
@@ -149,6 +155,6 @@ hh = plot_vertical_line(max(xvals(wh))); set(hh, 'Color', 'k', 'LineWidth', 4)
 title('Correct classification zones');
 
 %%
-
+figsavedir = fullfile(pwd, 'figures');
 saveas(gcf, fullfile(figsavedir, 'effect_size_class_accuracy_plots.png'));
 saveas(gcf, fullfile(figsavedir, 'effect_size_class_accuracy_plots.svg'));
