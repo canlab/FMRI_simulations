@@ -3,7 +3,7 @@
 [obj, true_obj, noise_obj] = sim_data(fmri_data, 'n', 30, 'plot');
  
 scn_export_papersetup(600);
-saveas(gcf, 'sim1_d=pt5_sig+noise_n30.png');
+% saveas(gcf, 'sim1_d=pt5_sig+noise_n30.png');
 
 
 %% Threshold and display thresholded
@@ -34,7 +34,7 @@ set(gcf, 'Tag', 'true', 'Name', 'true');
 scn_export_papersetup(600);
 saveas(gcf, 'sim1_true_effect_map.png');
 
-% Estimated effect 
+%% Estimated effect 
 t.dat(~t.sig) = 0;
 [mip, x, y, voldata] = pattern_surf_plot_mip(t);
 
@@ -118,7 +118,7 @@ axis off
 drawnow
 
 scn_export_papersetup(600);
-saveas(gcf, 'sim1_true_effect_size_slab.png');
+% saveas(gcf, 'sim1_true_effect_size_slab.png');
 
 %% ESTIMATED EFFECT SIZES ON SLAB
 
