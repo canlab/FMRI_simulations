@@ -11,6 +11,10 @@ pthr = .005; % (1 - tcdf(5.5, N)) ./ 2; % typical corrected threshold, use for s
 nr = 1;
 nc = 2;
 
+% vector to matrix correlation formula - anonymous function. 
+% a is an N x 1 vector, b is an N x k matrix
+% corr_matrix = @(a, b) ((a-mean(a))' * (b-mean(b)) ./ (length(a) - 1))' ./ (std(a)*std(b)');
+% This is stored in obj below, created by sim_data
 
 %% Simulated data
 
