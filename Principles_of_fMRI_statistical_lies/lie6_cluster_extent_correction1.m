@@ -47,6 +47,8 @@ o2 = title_montage(o2, 8, 'False positive voxels');
 
 % Print summary statistics
 
+fprintf('The estimated smoothness FWHM is %3.2f\nThe extent threshold for p<.05 corrected is k>%3.0f voxels.\n', mean(fwhm), cl_ext_spm);
+
 fpr = sum(falsepositives) / sum(t.sig);
 ppv = 1 - fpr;
 fprintf('The voxel-wise false positive rate, or false discovery rate, is %3.2f\nThe ppv is %3.2f, meaning that a significant voxel has an %3.0f%% chance of containing true signal.\n', fpr, ppv, 100*ppv);
@@ -56,6 +58,8 @@ fprintf('The voxel-wise false positive rate, or false discovery rate, is %3.2f\n
 % The ppv is 0.83, meaning that a signifcant voxel has an  83% chance of containing true signal.
 
 % Example 2
+% The estimated smoothness FWHM is 9.15
+% The extent threshold for p<.05 corrected is k>1652 voxels.
 % The voxel-wise false positive rate is 0.24
 % The ppv is 0.76, meaning that a significant voxel has an  76% chance of containing true signal.
 
