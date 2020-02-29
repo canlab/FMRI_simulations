@@ -18,6 +18,20 @@ cv2 = (a-mean(a))' * (b-mean(b)) / (length(a) - 1); % covariance
 % ----------------------------------------------------------
 
 
+% Matrix version of covariance
+% ----------------------------------------------------------
+
+X = rand(50, 4);
+
+((X-mean(X))' * (X-mean(X))) / (size(X, 1) - 1)
+
+cov(X)  % compare: same
+
+% Correlation
+(zscore(X)' * (zscore(X) / (size(X, 1) - 1)))
+
+corr(X)  % compare: same
+
 %% efficient calculation if a is a vector and b is a matrix
 % ----------------------------------------------------------
 % some versions of matlab do this with the corr() function, but others do

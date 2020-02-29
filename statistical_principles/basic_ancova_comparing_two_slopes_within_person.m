@@ -76,6 +76,12 @@ b_con = px3 * [y1 - y2]
 
 % stats on the slope difference
 % --------------------------------------------------------------------
+
+% Mixed LME with correlated errors for the two conditions
+% The issue with this is that the dfes for the fixed effects are not appropriate for 
+% generalizing across individuals. We would need to re-calculate the dfe
+% and standard error I think (Tor says).
+
 n = size(X1, 1);
 X = [X1; X2];               % Stacked predictors
 X = [ones(2*n, 1) X];       % full matrix with intercept
@@ -85,18 +91,43 @@ G = [(1:n)';(1:n)'];     % Grouping variable: Subject
 
 lme = fitlmematrix(X,y,Z,G,'FixedEffectPredictors',...
 {'Intercept','Predictor'},...
-'RandomEffectPredictors',{{'Intercept','Predictor'}},...
-'RandomEffectGroups',{'Subject'},'CovariancePattern','Isotropic')
+'RandomEffectPredictors',{'Intercept'},...
+'RandomEffectGroups',{'Subject'},'CovariancePattern','Isotropic');
 
-% bootstrap differences in slope?
-% mixed LME with correlated errors for the two conditions
+%% stats on the slope difference with bootstrapping
+% --------------------------------------------------------------------
+
+% bootstrap differences in slope
+% sample subjects with replacement, taking the 4 variables of interest 
+% (X1, y1, X2, y2) ? and then calculate the difference in slopes for each regression.
+
+D = [X1, y1, X2, y2];
+
+% Define functions
+get_beta = @(X1, y1) pinv([X1 ones(size(X1, 1), 1)]) * y1;
+slope_diff = @(D) (get_beta(D(:, 1), D(:, 2)) - get_beta(D(:, 3), D(:, 4)))'; % diff in slopes, first slope then intercept
+
+nbootsamples = 1000;
+
+BOOTSTAT = bootstrp(nbootsamples, slope_diff, D);    % Bootstrap and get statistics
+
+bhat = slope_diff(D); % estimate of betas from full sample
+
+[p, z] = bootbca_pval(0, slope_diff, BOOTSTAT, bhat, D);  % P and Z-values
+
+fprintf('Difference in slopes: bhat_diff = %3.2f, Z = %3.2f, P = %3.4f\n', bhat(1), z(1), p(1));
 
 
-% Comparing slopes vs. comparing correlations
+
+%% Comparing slopes vs. comparing correlations
 % --------------------------------------------------------------------
 % Steiger (1980) is a classic paper with results on comparing dependent
 % correlations. The formula for Z-scores Z1* and Z2* (eqs. 12 and 13)
 % work for the case 
+%
+% This will not give the same answer as the slope difference, because it's
+% comparing correlations, not slopes. The slopes could be different but the
+% correlations (signal to noise) could be identical.
 
 out = correl_compare_dep([X1 y1], [X2 y2], 'alpha', .05); % , ['rank'],['table'])
 fprintf('Compared dependent correlations: r1 = %3.2f vs. r2 = %3.2f, Z_diff = %3.2f, p = %3.4f\n', out.r1(1, 2), out.r2(1, 2), out.Z(1, 2), out.p(1, 2));
