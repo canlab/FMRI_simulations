@@ -11,7 +11,7 @@ cons(4, :) = cons(2, :) .* cons(3, :); % Cue_x_stim_stim
 
 cons = cons';
 
-%%
+%% Vanilla - HRF is exactly correct, no epochs
 
 true_eff_size = [0.1 0.3 0.5 0.7 1 1.3 1.5 1.8 2];
 OUT = {};
@@ -57,3 +57,54 @@ xlabel('True effect size');
 ylabel('Power');
 axis tight;
 set(gca, 'YLim', [0 1]);
+
+drawnow
+
+%% With HRF mismodeling, no epochs
+
+true_eff_size = [0.1 0.3 0.5 0.7 1 1.3 1.5 1.8 2];
+OUThrfmis = {};
+
+for i = 1:length(true_eff_size)
+
+    fprintf('%d ', i)
+    
+    OUThrfmis{i} = onsets2power(best_design_struct.ons, 'TR', best_design_struct.TR, 'hrfshape', 'contrasts', cons, 'n_iter', 50, 'true_effect_size', true_eff_size(i));
+
+end
+
+%
+
+for i = 1:length(true_eff_size)
+
+    power05(i, :) = OUThrfmis{i}.contrasts.power_est05;
+    
+    power001(i, :) = OUThrfmis{i}.contrasts.power_est001;
+    
+    powerfwer(i, :) = OUThrfmis{i}.contrasts.power_estfwer;
+    
+end
+
+create_figure('con power with hrf misspec', 1, 3);
+plot(true_eff_size, power05);
+xlabel('True effect size');
+ylabel('Power');
+axis tight;
+set(gca, 'YLim', [0 1]);
+legend(connames)
+
+subplot(1, 3, 2)
+plot(true_eff_size, power001);
+xlabel('True effect size');
+ylabel('Power');
+axis tight;
+set(gca, 'YLim', [0 1]);
+
+subplot(1, 3, 3)
+plot(true_eff_size, powerfwer);
+xlabel('True effect size');
+ylabel('Power');
+axis tight;
+set(gca, 'YLim', [0 1]);
+
+drawnow
