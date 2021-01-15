@@ -189,15 +189,15 @@ for i = 1:n_iter
         %         for i = 1:100
         
         %height = 1;
-        delay = exprnd(0.5);        % onset delay
-        peak = normrnd(6, 1);       % time to peak
+        delay = exprnd(1);        % onset delay
+        peak = normrnd(6, 3);       % time to peak
         peak(peak <= 0) = 1;
         uonset = normrnd(16, 1);    % undershoot onset
-        dispers = normrnd(1, .1);       % dispersion (0 = nan, low = peaked; high = diffuse)
+        dispers = normrnd(1, .3);       % dispersion (0 = nan, low = peaked; high = diffuse)
         dispers(dispers <= 0) = 1;
-        udisp = normrnd(1, .1);       % undershoot dispersion (0 = nan, low = peaked; high = diffuse)
+        udisp = normrnd(1, .3);       % undershoot dispersion (0 = nan, low = peaked; high = diffuse)
         udisp(udisp <= 0) = 1;
-        rtou = normrnd(6, 1);       % response to undershoot
+        rtou = normrnd(6, 3);       % response to undershoot
         klength = 32;
         
         p = [peak uonset dispers udisp rtou delay klength];
@@ -214,7 +214,10 @@ for i = 1:n_iter
             % Epoch dur in sec - convolve
             % amp of this will be too large to be realistic, but adjusted
             % below using 'nonlinsaturation'
-            true_hrf_this_iter = conv(ones(epochdur, 1), true_hrf_this_iter);
+            % Don't normalize: signal magnitude is effectively input mag. *
+            % number of seconds duration.
+            trueepochdur = min(1, round(normrnd(epochdur, 3)));
+            true_hrf_this_iter = conv(ones(trueepochdur, 1), true_hrf_this_iter);
             
             % Don't use epochs built into onsets2fmridesign, because we want to
             % control scaling and sample at 1 sec when generating simulated true activity
@@ -223,6 +226,11 @@ for i = 1:n_iter
             
             
         else
+            trueepochdur = 1 + geornd(.5); % true epochs are somewhat longer than assumed (min = 1, for single event)
+            % Normalize here so that epoch does not influence effect
+            % magnitude. With epochs specified, we're assuming there is
+            % greater true signal, so don't normalize in this way.
+            true_hrf_this_iter = conv(ones(trueepochdur, 1) ./ trueepochdur, true_hrf_this_iter);
             
             Xtrue = onsets2fmridesign(ons, TR, len, true_hrf_this_iter, 'parametric_singleregressor', pmod, 'noampscale');
             
@@ -261,31 +269,31 @@ for i = 1:n_iter
 end
 
 OUT.contrasts.sig = OUT.contrasts.p' < alpha & OUT.contrasts.t' > 0;
-OUT.contrasts.power_est = sum(OUT.contrasts.sig) ./ n_iter;
+OUT.contrasts.power_est = sum(OUT.contrasts.sig, 1) ./ n_iter;
 OUT.contrasts.alpha = alpha;
 
 OUT.contrasts.sig05 = OUT.contrasts.p' < 0.05 & OUT.contrasts.t' > 0;
-OUT.contrasts.power_est05 = sum(OUT.contrasts.sig05) ./ n_iter;
+OUT.contrasts.power_est05 = sum(OUT.contrasts.sig05, 1) ./ n_iter;
 
 OUT.contrasts.sig001 = OUT.contrasts.p' < 0.001 & OUT.contrasts.t' > 0;
-OUT.contrasts.power_est001 = sum(OUT.contrasts.sig001) ./ n_iter;
+OUT.contrasts.power_est001 = sum(OUT.contrasts.sig001, 1) ./ n_iter;
 
 OUT.contrasts.sig0001 = OUT.contrasts.p' < 0.0001 & OUT.contrasts.t' > 0;
-OUT.contrasts.power_est0001 = sum(OUT.contrasts.sig0001) ./ n_iter;
+OUT.contrasts.power_est0001 = sum(OUT.contrasts.sig0001, 1) ./ n_iter;
 
 OUT.contrasts.sigfwer = OUT.contrasts.p' < 1e-8 & OUT.contrasts.t' > 0;
-OUT.contrasts.power_estfwer = sum(OUT.contrasts.sigfwer) ./ n_iter;
+OUT.contrasts.power_estfwer = sum(OUT.contrasts.sigfwer, 1) ./ n_iter;
 
 
 % to do this, we likely want to generate true effect sizes a different way
 OUT.regressors.sig05 = OUT.regressors.p' < 0.05;
-OUT.regressors.power_est05 = sum(OUT.regressors.sig05) ./ n_iter;
+OUT.regressors.power_est05 = sum(OUT.regressors.sig05, 1) ./ n_iter;
 
 OUT.regressors.sig001 = OUT.regressors.p' < 0.001;
-OUT.regressors.power_est001 = sum(OUT.regressors.sig001) ./ n_iter;
+OUT.regressors.power_est001 = sum(OUT.regressors.sig001, 1) ./ n_iter;
 
 OUT.regressors.sig0001 = OUT.regressors.p' < 0.0001;
-OUT.regressors.power_est0001 = sum(OUT.regressors.sig0001) ./ n_iter;
+OUT.regressors.power_est0001 = sum(OUT.regressors.sig0001, 1) ./ n_iter;
 
 end % main function
 

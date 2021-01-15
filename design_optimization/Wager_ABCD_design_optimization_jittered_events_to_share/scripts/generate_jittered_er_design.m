@@ -155,7 +155,7 @@ for i = 1:length(varargin)
                 
             case 'contrastweights', contrastweights = varargin{i+1}; varargin{i+1} = [];
                 
-            otherwise, warning(['Unknown input string option:' varargin{i}]);
+            % otherwise, warning(['Unknown input string option:' varargin{i}]);
         end
     end
 end
@@ -377,10 +377,10 @@ end
 %     
 %     [eff,eff_vector] = calcEfficiency(contrastweights,contrasts,pinv(X),svi);
 %     
-end % efficiency
+%end % efficiency
 
 % -------------------------------------------------------------------------
 
-end
+end % main function
 
 
