@@ -129,7 +129,7 @@ end
 
 % get length
 X = onsets2fmridesign(ons, TR);
-len = ceil(size(X, 1) .* TR);
+len = ceil(size(X, 1) .* TR) + 1;  % Added 1 to avoid cutting off final event within TR/16 of end
 
 % HRF
 myhrf = spm_hrf(1) ./ max(spm_hrf(1));

@@ -141,6 +141,10 @@ for i = 1:length(varargin)
     end
 end
 
+if ISImean < ISImin
+    error('ISImean cannot be less than ISImin. Check input parameters and change as needed.');
+end
+
 % Custom parameters whose defaults depend on user input
 
 % Default contrasts
