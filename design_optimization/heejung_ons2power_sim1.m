@@ -203,7 +203,8 @@ ylabel('Power, true d = 0.2');
 legend({'HRF correct' 'HRF misspec'})
 
 %% Vary spacing of design
-
+% Variable event spacing for a design with 12 events per type, allowing the length to grow as spacing increases
+ 
 % For every iteration, generate a new random design and a new noise vector
 
 % Here, we look at mean ISI
@@ -234,7 +235,7 @@ for j = 1:ndesigns
         fprintf('ISI %3.2f. ', isimeans(i))
         
         % Generate a single novel design
-        [meanvif, ~, design_struct] = generate_jittered_er_design('ISImean', isimeans(i), 'ISImin', 0.1, 'trialtypes', 4, 'trialspertype', ntrials, 'noplot');
+        [meanvif, ~, design_struct] = generate_jittered_er_design('ISImean', isimeans(i), 'ISImin', 0.1, 'ISImax', 20, 'trialtypes', 4, 'trialspertype', ntrials, 'noplot');
         
         if j == 1
             create_figure('Design plot');
@@ -271,4 +272,150 @@ xlabel('Run length');
 ylabel('Power, true d = 0.2');
 legend({'HRF correct' 'HRF misspec'})
 
+%% Vary spacing of design
+% Variable event spacing, keeping length constant at 400 sec and packing in
+% more vs. fewer trials
+ 
+% For every iteration, generate a new random design and a new noise vector
 
+% Here, we look at mean ISI
+
+% Set contrasts
+% c = [1 -1 0 0 1 -1 0 0 ;
+%     0  0 1 -1 0 0 1 -1 ;
+%     1 -1 1 -1 0 0 0 0 ;
+%     0 0 0 0 1 -1 1 -1 ;
+%     ]';
+
+c = eye(8);
+
+isimeans = [.5:3.5 5:2:20];  % Mean ISI (variable)
+true_eff_size = 0.2;   % Signal magnitude
+ntrials = 30;          % this will be reduced to keep length the same for all....
+maxlength = 400;
+niter = 100;           % how many noise iterations for a given design for power estimates
+ndesigns = 10;         % how many different random designs to average over
+
+pow_hrfok = zeros(length(isimeans), ndesigns);
+pow_hrfmisspec = zeros(length(isimeans), ndesigns);
+len = zeros(length(isimeans), ndesigns);
+
+for j = 1:ndesigns
+    
+    for i = 1:length(isimeans)
+        
+        fprintf('ISI %3.2f. ', isimeans(i))
+        
+        % Generate a single novel design
+        [meanvif, ~, design_struct] = generate_jittered_er_design('ISImean', isimeans(i), 'ISImin', 0.1, 'ISImax', 20, 'trialtypes', 4, 'trialspertype', ntrials, 'noplot');
+        
+        % restrict to max length
+        for x = 1:length(design_struct.ons)
+            design_struct.ons{x}(design_struct.ons{x} > maxlength) = [];
+        end
+        
+        if j == 1
+            create_figure('Design plot');
+            [X,d,out,handles] = plotDesign(design_struct.ons, [], 2, 'samefig');
+            set(gca, 'XLim', [0 450])
+            drawnow
+        end
+        
+        len(i, j) = design_struct.scanlength;
+        
+        % Simulate power with 100 noise vectors (very rough estimate)
+        % With HRF misspec
+        outstruct = onsets2power(design_struct.ons, 'TR', best_design_struct.TR, 'hrfshape', 'contrasts', c, 'n_iter', niter, 'true_effect_size', true_eff_size);
+        
+        pow_hrfmisspec(i, j) = mean(outstruct.contrasts.power_est, 2);
+        
+        % Without HRF misspec
+        outstruct = onsets2power(design_struct.ons, 'TR', best_design_struct.TR, 'contrasts', c, 'n_iter', niter, 'true_effect_size', true_eff_size);
+        
+        pow_hrfok(i, j) = mean(outstruct.contrasts.power_est, 2);
+        
+        
+        disp('Done.')
+        
+    end % trials loop
+    
+end % designs loop
+
+create_figure('mean con power vs num trials');
+plot(isimeans, mean(pow_hrfok, 2), 'o-', 'MarkerFaceColor', [.5 .5 1], 'LineWidth', 3);
+plot(isimeans, mean(pow_hrfmisspec, 2), 'o-', 'MarkerFaceColor', [1 .5 1], 'LineWidth', 3);
+
+xlabel('Mean ISI');
+ylabel('Power, true d = 0.2');
+legend({'HRF correct' 'HRF misspec'})
+title('Power for 400 sec, 4 trial types x 2 events per');
+
+
+%% Vary number of event types
+% 4.5 mean ISI event spacing, keeping length constant at 400 sec and packing in
+% more vs. fewer trials
+
+trialtypes = 1:9;
+isimean = 4.5;        % Mean ISI 
+true_eff_size = 0.2;   % Signal magnitude
+ntrials = 50;          % this will be reduced to keep length the same for all....
+maxlength = 400;
+niter = 100;           % how many noise iterations for a given design for power estimates
+ndesigns = 10;         % how many different random designs to average over
+
+pow_hrfok = zeros(length(trialtypes), ndesigns);
+pow_hrfmisspec = zeros(length(trialtypes), ndesigns);
+len = zeros(length(trialtypes), ndesigns);
+
+for j = 1:ndesigns
+    
+    for i = 1:length(trialtypes)
+        
+        fprintf('Trial types %d. ', trialtypes(i))
+        
+        % Contrasts - just condition amplitudes
+        c = eye(2 .* trialtypes(i));
+        
+        % Generate a single novel design
+        [meanvif, ~, design_struct] = generate_jittered_er_design('ISImean', isimean, 'ISImin', 0.1, 'ISImax', 20, 'trialtypes', trialtypes(i), 'trialspertype', ntrials, 'noplot');
+        
+        % restrict to max length
+        for x = 1:length(design_struct.ons)
+            design_struct.ons{x}(design_struct.ons{x} > maxlength) = [];
+        end
+        
+        if j == 1
+            create_figure('Design plot');
+            [X,d,out,handles] = plotDesign(design_struct.ons, [], 2, 'samefig');
+            set(gca, 'XLim', [0 450])
+            drawnow
+        end
+        
+        len(i, j) = design_struct.scanlength;
+        
+        % Simulate power with 100 noise vectors (very rough estimate)
+        % With HRF misspec
+        outstruct = onsets2power(design_struct.ons, 'TR', best_design_struct.TR, 'hrfshape', 'contrasts', c, 'n_iter', niter, 'true_effect_size', true_eff_size);
+        
+        pow_hrfmisspec(i, j) = mean(outstruct.contrasts.power_est, 2);
+        
+        % Without HRF misspec
+        outstruct = onsets2power(design_struct.ons, 'TR', best_design_struct.TR, 'contrasts', c, 'n_iter', niter, 'true_effect_size', true_eff_size);
+        
+        pow_hrfok(i, j) = mean(outstruct.contrasts.power_est, 2);
+        
+        
+        disp('Done.')
+        
+    end % trials loop
+    
+end % designs loop
+
+create_figure('mean con power vs num trials');
+plot(trialtypes, mean(pow_hrfok, 2), 'o-', 'MarkerFaceColor', [.5 .5 1], 'LineWidth', 3);
+plot(trialtypes, mean(pow_hrfmisspec, 2), 'o-', 'MarkerFaceColor', [1 .5 1], 'LineWidth', 3);
+
+xlabel('Number of trial types');
+ylabel('Power, true d = 0.2');
+legend({'HRF correct' 'HRF misspec'})
+title('Power for 400 sec, 4.5 mean ISI, single-condition contrasts');
