@@ -178,3 +178,63 @@ ylabel('y - IQ')
 
 title('Low c (poor schools)')
 
+%% Conditioning on a common cause
+
+% c > y
+% v
+% x
+
+% true
+n = 1000;
+
+c = randn(n, 1);
+x = (randn(n, 1) + c) ./ 2;
+y = (randn(n, 1) + c) ./ 2;
+% c = (x + y + randn(n, 1)) ./ 3;
+int = ones(size(x));
+
+[b,~, r, ~, stats] = regress(y, [int c x]);
+
+create_figure('scatter', 2, 2)
+
+% All
+plot(x, y, 'ko', 'MarkerFaceColor', [.5 .5 .5]);
+xlabel('x - Income')
+ylabel('y - IQ')
+title('All observations')
+refline
+
+wh = c > median(c);
+
+% Split - together
+subplot(2, 2, 2)
+% plot(x, y, 'ko', 'MarkerFaceColor', [.5 .5 .5]);
+plot(x(wh), y(wh), 'ko', 'MarkerFaceColor', [.7 .3 .8]);
+plot(x(~wh), y(~wh), 'ko', 'MarkerFaceColor', [.2 .7 .5]);
+xlabel('x - Income')
+ylabel('y - IQ')
+title('Conditioning on c (school quality)')
+refline
+
+subplot(2, 2, 3)
+
+plot(x(wh), y(wh), 'ko', 'MarkerFaceColor', [.7 .3 .8]);
+refline
+plot(x(~wh), y(~wh), 'ko', 'Color', [.7 .7 .7]);
+
+xlabel('x - Income')
+ylabel('y - IQ')
+
+title('High c (good schools)')
+
+
+subplot(2, 2, 4)
+
+plot(x(~wh), y(~wh), 'ko', 'MarkerFaceColor', [.2 .7 .5]);
+refline
+plot(x(wh), y(wh), 'ko', 'Color', [.7 .7 .7]);
+
+xlabel('x - Income')
+ylabel('y - IQ')
+
+title('Low c (poor schools)')
