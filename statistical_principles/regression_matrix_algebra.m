@@ -1,4 +1,34 @@
-% test
+%% The dot product as a measure of similarity and it's relationship to the cos and angle between vectors
+% ----------------------------------------------------------------------
+
+x = [1/2^.5 1/2^.5 1/2^.5]; y = [1/2^.5 1/2^.5 1/2^.5]'; x*y
+
+% dot product is proportional to cos(theta), where theta is angle between them
+% it is cos(theta) * length of both vectors
+cos(0)
+cos(0) * norm(x) * norm(y)
+
+cos(0) * norm(x) * norm(y)
+x = rand(10, 1)'; y = rand(1, 10)'; x*y
+cos(0) * norm(x) * norm(y)
+x*y ./ norm(x) * norm(y)
+x*y ./ (norm(x) * norm(y))
+help cos
+acos(x*y ./ (norm(x) * norm(y)))
+
+acos(.9)*180/pi % in degrees
+
+
+% norm is the sqrt(x'*x), the dot product with itself, the length of the vector
+
+% x*y = cos(theta) * norm(x)*norm(y)
+
+% cos(theta) = x*y / (norm(x)*norm(y))
+
+% if norm(x)=norm(y)=1
+% cos(theta)=x*y
+% cos(theta)~x*y
+
 
 %% Simulate a standard multiple regression model and solve several ways
 % ----------------------------------------------------------------------
