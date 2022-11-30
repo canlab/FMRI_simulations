@@ -1,3 +1,7 @@
+
+% Including orthogonal covariates will not affect the regression slopes,
+% but will affect the error variance.
+
 x1 = [zeros(50, 1); ones(50, 1)];
 x2 = [zeros(25, 1); ones(25, 1); zeros(25, 1); ones(25, 1)];
 
