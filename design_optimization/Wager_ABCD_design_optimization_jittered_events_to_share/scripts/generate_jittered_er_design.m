@@ -63,7 +63,9 @@ function [meanrecipvif, vifs, design_struct] = generate_jittered_er_design(varar
 % print_matrix(design_struct.eventlist, design_struct.eventlist_names);
 %
 % See also:
-% optimizeGA, onsets2fmridesign
+% optimizeGA, onsets2fmridesign, plotDesign, onsets2power, onsets2efficiency, onsets2singletrial
+% create_block_design, create_design_single_event, create_random_er_design, create_random_onsets
+% 
 
 % Programmers' notes:
 % NOTE: This version was created for the ABCD MID task, and has not been tested
