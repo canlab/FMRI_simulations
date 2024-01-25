@@ -1,5 +1,8 @@
 % Estimate variance components and weights in a simple way
 
+
+% https://en.wikipedia.org/wiki/Empirical_Bayes_method
+
 %% No true diffs among means
 
 within_var = 1;
