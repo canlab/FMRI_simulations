@@ -96,6 +96,13 @@ disp('And regressors are therefore independent, model is identified')
 % X = inv(A)*B
 % X = A\B
 
+% For XB = Y
+% left-multiply both sides by inv(X)
+% inv(X)*X*B = inv(X)*Y
+% inv(X)*X = I (identity)
+% B = inv(X)*Y
+% X = A\B
+
 %% For PLS
 % Notation as in Wold 2001
 % Y is matrix of outcomes, T is latent scores on X

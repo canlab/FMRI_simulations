@@ -64,7 +64,7 @@ corr_matrix = @(a, b) ((a-mean(a))' * (b-mean(b)) ./ (length(a) - 1))' ./ (std(a
 
 % This version takes and N x p matrix a and an N x v matrix b and returns
 % a p x v matrix of correlations across the pairs. 
-corr_matrix = @(a, b) ((a-mean(a))' * (b-mean(b)) ./ (size(a, 1) - 1)) ./ (std(b)' * std(a))'; % Correlation of a with each column of b
+corr_matrix = @(a, b) ((a-mean(a))' * (b-mean(b)) ./ (size(a, 1) - 1)) ./ (std(b)' * std(a))'; % Correlation of each column of a with each column of b
 
 
 rr2 = corr_matrix(a, b);
