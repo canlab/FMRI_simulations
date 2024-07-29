@@ -171,10 +171,10 @@ end
     
 %%
 
-scn_export_papersetup(600);
-saveas(gcf, 'power_figure3B.png');
-scn_export_papersetup(500);
-saveas(gcf, 'power_figure3Balt.png');
+% scn_export_papersetup(600);
+% saveas(gcf, 'power_figure3B.png');
+% scn_export_papersetup(500);
+% saveas(gcf, 'power_figure3Balt.png');
 
 
 %% what is power with SNPM correction (perm)?
