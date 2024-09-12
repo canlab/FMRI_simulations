@@ -3,6 +3,9 @@
 % also known as the probability of superiority (Grissom and Kim, 2005)
 % See Lakens 2013 primer.
 
+% McGraw, Kenneth O., and Seok P. Wong. "A common language effect size statistic." Psychological bulletin 111.2 (1992): 361.
+
+% Two-sample example:
 % example from McGraw and Wong 1992: height for male vs. female
 % mag = 69.7 - 64.3; % inches
 % sd = [2.8 2.6];
@@ -26,17 +29,17 @@
 % decide which is higher.
 
 d = [0:.05:3];
-p = normcdf(d);
+p = normcdf(d / sqrt(2)); % sqrt(2) because we are doing forced choice.
 
 create_figure('d vs. classification accuracy', 2, 2)
 h1 = plot(d, p, 'LineWidth', 3);
 xlabel('Effect size (d)')
 ylabel('Classification Accuracy')
 
-% When comparing two samples, each sample has a standard deviation. 
+% When comparing two independent samples, each sample has a standard deviation. 
 % The std of the difference is sqrt(var1 + var2)
 % If standard devs are equal, d will be 1/sqrt(2) times the distance between the two means.
-% if doing a forced-choice comparison, picking examctly one from each
+% if doing a forced-choice comparison, picking exactly one from each
 % distribution, then normcdf(d) applies. This is the "common language" metric. 
 %
 % But if choosing a single observation and making a decision, we have less info.
@@ -52,6 +55,19 @@ h2 = plot(d, p2, 'LineWidth', 3);
 % crosshairs
 hh = plot([.8 .8], [.5 normcdf(.8/2)], 'k--');
 hh = plot([0 .8], [normcdf(.8/2) normcdf(.8/2)], 'k--');
+text(0.8 - 0.1, 0.47, sprintf('%3.1f', 0.8), 'FontSize', 14)
+
+d90 = norminv(0.9) * sqrt(2);
+hh = plot([d90 d90], [.5 normcdf(d90  / sqrt(2))], 'k--');
+hh = plot([0 d90], [normcdf(d90 / sqrt(2)) normcdf(d90  / sqrt(2))], 'k--');
+d90
+text(d90 - 0.1, 0.47, sprintf('%3.1f', d90), 'FontSize', 14)
+
+d90 = norminv(0.9)*2;
+hh = plot([d90 d90], [.5 normcdf(d90/2)], 'k--');
+hh = plot([0 d90], [normcdf(d90/2) normcdf(d90/2)], 'k--');
+d90
+text(d90 - 0.1, 0.47, sprintf('%3.1f', d90), 'FontSize', 14)
 
 set(gca, 'YLim', [.4 1]);
 
@@ -81,7 +97,7 @@ x1 = mvnrnd(mean1, sd1 ^ 2, 100000);
 x2 = mvnrnd(mean2, sd2 ^ 2, 100000); % effect size of 0.8
 
 % Forced-choice
-d_force_choice = abs(mean2 - mean1) ./ sqrt(sd1 ^ 2 + sd2 ^ 2) % McGraw 1992
+d_force_choice = abs(mean2 - mean1) ./ sqrt(sd1 ^ 2 + sd2 ^ 2) % McGraw 1992. abs(d)/sqrt(2)
 p_force_choice = normcdf(d_force_choice)  % the "common language effect size"
 
 empirical_forcedchoice = sum(x2 > x1) ./ length(x1)
