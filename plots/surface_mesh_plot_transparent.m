@@ -54,6 +54,10 @@ view(45, 30);
 % Electric Blue: [0, 0.5, 1]
 anchorColors = [0 0.5 1; 1 0.5 0; 1 1 0];
 
+anchorColors = [0 1 0.5; 0 0.5 0; 1 1 0];
+
+anchorColors = [.2 .2 1; 0 0 1; 1 0 1];
+
 % Interpolate to create a smooth colormap with 256 colors.
 nColors = 256;
 customCMap = interp1(linspace(0,1,size(anchorColors,1)), anchorColors, linspace(0,1,nColors));
