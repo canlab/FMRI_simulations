@@ -1,0 +1,21 @@
+Notes: late-2025 content marketing trends (sources)
+
+- CMI B2B Content Marketing Benchmarks, Budgets, and Trends: Outlook for 2025 highlights effectiveness gaps and resource constraints; many rate strategy only moderately effective (58%), with lack of clear goals and limited resources as persistent challenges. Emphasis on scalable models and better alignment with buyer journey and measurement. Source: https://contentmarketinginstitute.com/b2b-research/b2b-content-marketing-trends-research-2025
+- WordStream 2025 trends point to a transition year with AI-powered answer engines (AEO), expansion of AI tech stacks, AI transparency, uniqueness moats, forums/community content, and broader distribution diversification. Source: https://www.wordstream.com/blog/content-marketing-trends-2025
+- The CMA 2025 trends emphasize AI integration, authenticity, short-form video dominance, and a comeback of longer-form content. Source: https://the-cma.com/news-insight/content-marketing-trends-2025
+
+Observations from late-2025 trends
+
+- AI is no longer optional; it is moving from experimentation to integrated workflows and disclosure practices.
+- Search and discovery are splintering: answer engines, forums, and alternative platforms push marketers to diversify distribution beyond classic SEO.
+- Format bifurcation: short-form video remains dominant while long-form content regains strategic value for depth and trust.
+- Authenticity and differentiation are increasingly central as AI content volume rises; uniqueness moats are becoming a competitive necessity.
+- Operational strain persists (resources, measurement, alignment), suggesting process and governance upgrades are as important as creative breakthroughs.
+
+Reflection: potential 2026 trend directions (new/different)
+
+- Verifiable content claims become table-stakes: source cards, data provenance, and machine-readable citations built into content for AI answer layers.
+- Agentic content operations: autonomous content agents handle research, drafting, personalization, and distribution with human QA and brand governance.
+- Consent-based personalization programs: audiences trade explicit preferences for tailored content journeys; “preference centers 2.0” evolve into value exchanges.
+- Multimodal authority building: brands invest in audio, video, and interactive data assets optimized for AI retrieval across modalities.
+- Community-as-product: private micro-communities, paid expert rooms, and partner-led creator networks replace broad social reach as the primary trust engine.
