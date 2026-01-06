@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>4 - Multimodal authority</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f7f4ef;
+      --panel: #ffffff;
+      --ink: #1f2933;
+      --muted: #5b6b7a;
+      --accent: #f4e8b9;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Barlow", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+    }
+    .canvas {
+      width: 100%;
+      height: 25vh;
+      min-height: 220px;
+      max-height: 320px;
+      display: grid;
+      place-items: center;
+      padding: 16px;
+      background: linear-gradient(135deg, #fff, var(--accent));
+    }
+    .card {
+      width: min(900px, 92%);
+      height: 100%;
+      background: var(--panel);
+      border-radius: 18px;
+      padding: 18px 20px;
+      box-shadow: 0 12px 24px rgba(22, 30, 40, 0.12);
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 12px;
+      align-items: center;
+    }
+    h1 {
+      margin: 0 0 6px;
+      font-size: clamp(1.1rem, 2.6vw, 1.6rem);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .big {
+      margin: 0;
+      font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+      font-weight: 700;
+      line-height: 1.1;
+    }
+    .list {
+      display: grid;
+      gap: 8px;
+      font-size: 0.98rem;
+      color: var(--muted);
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(31, 41, 51, 0.08);
+      font-weight: 600;
+      font-size: 0.85rem;
+      margin-top: 6px;
+      width: fit-content;
+    }
+    @media (max-width: 720px) {
+      .card { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="canvas">
+    <section class="card">
+      <div>
+        <h1>Trend 4</h1>
+        <p class="big">Multimodal authority</p>
+        <span class="pill">Every format matters</span>
+      </div>
+      <div class="list">
+        <div>Text + audio + video</div>
+        <div>Interactive assets</div>
+        <div>Searchable chapters</div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

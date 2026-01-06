@@ -60,13 +60,15 @@ text(0.8 - 0.1, 0.47, sprintf('%3.1f', 0.8), 'FontSize', 14)
 d90 = norminv(0.9) * sqrt(2);
 hh = plot([d90 d90], [.5 normcdf(d90  / sqrt(2))], 'k--');
 hh = plot([0 d90], [normcdf(d90 / sqrt(2)) normcdf(d90  / sqrt(2))], 'k--');
-d90
+
+fprintf('d required for 90% accuracy, 1 sample: %3.2f\n', d90)
+
 text(d90 - 0.1, 0.47, sprintf('%3.1f', d90), 'FontSize', 14)
 
 d90 = norminv(0.9)*2;
 hh = plot([d90 d90], [.5 normcdf(d90/2)], 'k--');
 hh = plot([0 d90], [normcdf(d90/2) normcdf(d90/2)], 'k--');
-d90
+fprintf('d required for 90% accuracy, 2 samples: %3.2f\n', d90)
 text(d90 - 0.1, 0.47, sprintf('%3.1f', d90), 'FontSize', 14)
 
 set(gca, 'YLim', [.4 1]);
@@ -83,7 +85,7 @@ title('Accuracy by effect size');
 % Note: this simulation requires mean2 > mean1 to work correctly.
 
 mean1 = 0;
-mean2 = .8;
+mean2 = .8; % effect size of 0.8
 sd1 = 1;
 sd2 = 1;
 
@@ -94,11 +96,14 @@ sd2 = 1;
 % sd2 = 2.6;
 
 x1 = mvnrnd(mean1, sd1 ^ 2, 100000);
-x2 = mvnrnd(mean2, sd2 ^ 2, 100000); % effect size of 0.8
+x2 = mvnrnd(mean2, sd2 ^ 2, 100000); 
 
 % Forced-choice
 d_force_choice = abs(mean2 - mean1) ./ sqrt(sd1 ^ 2 + sd2 ^ 2) % McGraw 1992. abs(d)/sqrt(2)
 p_force_choice = normcdf(d_force_choice)  % the "common language effect size"
+
+fprintf('Accuracy, forced choice, d = %3.2f: %3.2f\n', mean2 - mean1, d_force_choice);
+
 
 empirical_forcedchoice = sum(x2 > x1) ./ length(x1)
 

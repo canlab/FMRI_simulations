@@ -1,0 +1,27 @@
+This example uses OpenAI Codex command line interface to search the web, create a blog post and infographics, and produce a web-ready HTML file with the blog post.
+
+You can imagine creating markdown files for Jupyter books or really anything you want.
+
+1. Install homebrew for Mac (or chocolatey for windows)
+2. Install node.js and python if needed
+
+	brew install nodejs python@3.13
+
+3. Install Codex (OpenAI)...or comparable for other models (need paid version probably)
+
+	npm i -g @openai/codex
+
+4. Make a test directory to store files and to which you'll give Codex access:
+
+cd /Users/f003vz1/Downloads
+mkdir codex_trial
+cd codex_trial
+
+5. Start Codex
+	codex
+
+6. Use prompts to read and write files
+
+e.g., 
+Strictly follow the recipe in recipe.txt
+
