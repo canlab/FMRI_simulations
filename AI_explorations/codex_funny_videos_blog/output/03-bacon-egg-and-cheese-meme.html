@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>03 BACON EGG AND CHEESE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      :root {
+        --ink: #111111;
+        --cream: #FFF5E8;
+        --bg: #FFF5E8;
+        --accent: #B7F000;
+        --accent2: #3B6BFF;
+      }
+      body {
+        font-family: 'Barlow', sans-serif;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-[var(--cream)] flex items-center justify-center p-6">
+    <div class="relative w-[420px] h-[420px] bg-[var(--bg)] border-[6px] border-[var(--ink)] rounded-[28px] shadow-[10px_10px_0_0_var(--ink)] overflow-hidden">
+      <div class="absolute -top-6 -right-6 w-32 h-32 bg-[var(--accent)] border-[4px] border-[var(--ink)] rounded-full"></div>
+      <div class="absolute -bottom-8 -left-8 w-36 h-36 bg-[var(--accent2)] border-[4px] border-[var(--ink)] rounded-[20px] rotate-[-8deg]"></div>
+      <div class="absolute top-16 left-6 w-20 h-20 bg-[var(--cream)] border-[4px] border-[var(--ink)] rounded-full"></div>
+      <div class="absolute top-24 right-10 w-24 h-10 bg-[var(--ink)]"></div>
+      <div class="relative z-10 p-7 h-full flex flex-col">
+        <div class="text-xs font-bold uppercase tracking-[0.35em]">Meme 03</div>
+        <div class="mt-6 text-4xl font-extrabold leading-tight text-[var(--ink)]">
+          <div>BACON EGG</div>
+          <div class="text-3xl">AND CHEESE</div>
+        </div>
+        <div class="mt-auto flex items-center gap-3">
+          <div class="w-16 h-16 bg-[var(--accent)] border-[4px] border-[var(--ink)] rounded-[14px] flex items-center justify-center text-xl font-extrabold">
+            BEC
+          </div>
+          <div class="text-sm font-semibold uppercase tracking-[0.2em]">NEO BRUTAL</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

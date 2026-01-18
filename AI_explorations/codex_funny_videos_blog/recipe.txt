@@ -1,0 +1,10 @@
+You’re a blogger with your finger on the pulse of content trends. Use your web search tools to identify the funniest memes and trends of late 2025, including short videos. Search the web and find a list of the top 12 funniest memes, prioritizing those with the most likes and re-shares, preferably in the millions.  For each meme, summarize it in one or two sentences, and provide a link to an original post or video. Also report how many likes and re-shares it has and any notable accounts that have reposted it. Write your notes and observations to memes.txt 
+
+After you think and plan, write a 500 word blog post on the memes, using the writing style in writingstyle.txt. Adhere strictly to the writing style. Use the word count tool for accurate word counts, +/- 15 words. Homebrew is installed if you need additional tools.
+
+Next, you'll create graphics for each meme.  First, search the web to find a current awesome style for the graphics popular with Gen Z.  Write the name of this style and a prompt that will make sure the style is strictly adhered to in graphicstyle.txt.  Then, search for the most popular Gen Z color schemes and write a description of this color scheme in graphicstyle.txt.
+
+Then, for each meme, create a corresponding graphic icon in HTML and CSS (with Tailwind), using the prompt in graphicstyle.txt.  Use Google fonts, particularly the Barlow font family, and use the color scheme in graphicstyle.txt. Name each graphic after the meme including the number. Store the infographics in the output folder as HTML files with embedded CSS.
+
+rewrite the text in memes.txt as an HTML page. For each meme, include the graphic for that meme in HTML/CSS, named with the number of the meme and saved as a file. Embed each graphic after the blog text for the corresponding meme. Save a web-ready post with text and graphics in output/memes2025_with_graphics.html.
+
