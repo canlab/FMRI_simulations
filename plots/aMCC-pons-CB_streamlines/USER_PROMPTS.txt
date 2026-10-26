@@ -1,0 +1,41 @@
+USER PROMPTS (provenance log)
+=============================
+
+[2026-10-23] Prompt 1
+---------------------
+write matlab code using canlab tools to make a streamline plot of connections between the aMCC, ventral pons, and cerebellum. Start with sample masks derived from the canlab 2024 atlas (load_atlas, select_atlas_subset). Work with those objects.
+
+I think the function for plotting streamlines is in nmdsfig_tools. This will create a series of colored lines connecting one region in the pathway to the other. Here, we want lines from aMCC (anterior cingulate) to pons, and from pons to cerebellum.  Use medial surface renderings so we can see all three areas.  I want red/orange colors that look striking, with all region isosurfaces rendered in a similar red/orange color.
+Execute the code in Matlab 2024 to make sure the colors, lighting, and rendering look good.
+
+. Use a hires medial surface that looks good - try the hcp medial surface in addbrain.m first with brainstem in addbrain semi-transparent, or hires_right cortical surface with semi-transparent brainstem.  save any created files (code and final rendering figure) in aMCC-pons-CB_streamlines/. save all my input prompts in USER_PROMPTS.txt for provenance.
+
+[2026-10-23] Prompt 2
+---------------------
+start with my edits to the .m file. select a dorsal cerebellar region around lobule VI. Comment out the isosurface block and save it for backup if needed, but try a surface rendering where you use render_on_surface or similar to render the region blobs on the existing surfaces instead of creating new isosurfaces.  The problem is that the isosurfaces are too blocky/irregular. after you have made the rendering, separately, investigate ways to smooth the isosurfaces so they are very smooth and see if you can get a better version.
+
+[2026-10-23] Prompt 3
+---------------------
+This is loking better. use a smaller region of aMCC (about 1/2 the current area on the medial surface) and a smaller region of more ventral pons if possible using canlab2024 atlas. We also don't need quite so many streamlines, try about 70% of the current number.  you have these new functions sample_regions_on_vertices and render_regions_on_vertices. is there an equivalent/comparable function within canlab tools, like render_on_surface for region objects or fmri_data objects, that would work? if so, comment out your code as an alternative method and use the canlab methods. if canlab is not suitable, advise, and we can explore adding to canlab tools. your functions may also be more compact and high-quality. there should be a function that takes a region object or fmri_data object and a series of isosurface handles and a color and renders all the vertices close enough in the color. similarly, there should be an option in the canlab isosurface() method to smooth the way you have done, making sure the size (volume) remains the same but the rough volume surfaces are smoothed. if that is inadequate in existing canlab isosurface(), which i think it is, add your new smoothing function as a subfunction and replace previous attempts to smooth the isosurfaces with your code.
+
+[2026-10-24] Prompt 4
+---------------------
+is there a high-resolution cerebellum option in canlab tools? the one in addbrain 'hires right' is pretty good, but the cortex is connected. i want just the cerebellum
+
+[2026-10-24] Prompt 5
+---------------------
+yes let's go with option 2. create addbrain('cerebellum hires') option in CanlabCore, saved once as a .mat file in canlabcore. Then switch the main script to SUIT cerebellum, commenting out the older code but keeping it for backup.
+
+[2026-10-24] Prompt 6
+---------------------
+Great. now make a movie of the cerebellum. Start with the view and objects in my code below.  Start with a view with the left side of the brain facing the camera. THe movie is about 2 sec long. The brain rotates to a top-down view, and at the same time, the cerebellum becomes more opaque and the cortex and brainstem more transparent, and the view zooms in on the cerebellum. The movie finishes with only the opaque cerebellum visible.
+
+here is the code:
+create_figure; addbrain('cerebellum hires'); h = ans; h = [h addbrain('surface right')];
+delete(h(3))
+h(3) = addbrain('brainstem');
+set(h(3), 'FaceColor', [0.5 .5 .5]);
+
+[2026-10-24] Prompt 7
+---------------------
+CAN you make a movie where you start from the endpoint of the previous one and then you inflate and unfold the cerebellum so it ends up looking like the flat map in the canlab render on cerebellar flatmap function?  the end state is packaged with SUIT.?
